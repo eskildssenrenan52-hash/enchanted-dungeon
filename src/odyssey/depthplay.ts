@@ -6,6 +6,7 @@ import { QUESTS, type NpcDef } from './data';
 import { T, TS, W, H, type World } from './world';
 import { cycleBonus } from './story';
 import { drawTreasure } from './scenery';
+import { propAction, propLights } from './depth-props';
 
 export interface DepthState { kind: 'abyss' | 'temple'; floor: number; temple?: Temple; data: DungeonFloor; stair: StairStyle }
 
@@ -72,7 +73,7 @@ export function enterAbyss(g: Game, floor: number) {
 }
 
 export function enterTemple(g: Game, t: Temple) {
-  if (!hasTorch(g)) { g.toast('Escuro demais para descer. Você precisa de uma Tocha (Mercado ou Carpintaria: 2 madeira + 1 carvão).', '#ff9a60'); g.audio.sfx('ui'); return; }
+  if (!hasTorch(g)) { g.toast('Escuro demais para descer. Você precisa de uma Tocha: compre no Mercador Pip, em Potos, ou faça na Carpintaria (2 madeira + 1 carvão).', '#ff9a60'); g.audio.sfx('ui'); return; }
   enter(g, { kind: 'temple', floor: 2, temple: t, data: generateTempleFloor(t), stair: t.stair }, 1.3);
   g.discoveries.add(t.id);
   g.biomeBanner = { name: `${t.name} · 2º andar · Nv ${t.level}+`, t: 4 };
@@ -101,6 +102,7 @@ const near = (g: Game, tx: number, ty: number, r = 22) => Math.hypot(g.p.x - tx 
 export function depthAction(g: Game, run: boolean): string {
   const d = g.depth; if (!d) return '';
   const data = d.data;
+  const prop = propAction(g, run); if (prop) return prop;
   for (const c of data.chests) if (near(g, c.tx, c.ty)) { if (run) g.claimChest(c.id, c.gold, c.item, c.qty, 'Baú das profundezas'); return g.openedChests.has(c.id) ? 'Baú vazio' : 'E · Abrir baú'; }
   if (near(g, data.start.tx, data.start.ty, 20)) {
     if (run) { if (d.kind === 'abyss' && d.floor > 1) enterAbyss(g, d.floor - 1); else leaveDepth(g); }
@@ -151,5 +153,6 @@ export function depthLights(g: Game, hole: (x: number, y: number, r: number, a?:
   if (torch) glows.push({ x: g.p.x, y: g.p.y - 10, r: 46, col: 'rgba(255,150,60,0.22)' });
   for (const t of d.data.torches) { hole(t.tx * TS + 8, t.ty * TS + 6, 64 + Math.sin(wt * 7 + t.tx) * 3, 0.95); glows.push({ x: t.tx * TS + 8, y: t.ty * TS + 4, r: 34, col: 'rgba(255,140,50,0.32)' }); }
   hole(d.data.start.tx * TS + 8, d.data.start.ty * TS + 8, 30, 0.6);
+  propLights(g, hole, glows, wt);
 }
 export const depthDarkness = (g: Game) => (g.depth?.kind === 'temple' ? 0.95 : 0.9);
