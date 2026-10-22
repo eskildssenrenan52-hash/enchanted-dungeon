@@ -16,7 +16,7 @@ const FRONTIER_SPRITE: Record<FrontierBiome, [number, number, number]> = {
 };
 /** Objetos dos biomas originais desenhados por cima do chão: tile -> [índice em props, tamanho]. */
 const PROP: Partial<Record<number, [number, number]>> = {
-  [T.ROCK]: [0, 28], [T.CACTUS]: [1, 32], [T.BUSH]: [2, 26], [T.CRYSTAL]: [3, 34], [T.MUSHROOM]: [4, 34], [T.PILLAR]: [5, 36],
+  [T.ROCK]: [0, 28], [T.CACTUS]: [1, 32], [T.BUSH]: [2, 26], [T.CRYSTAL]: [3, 34], [T.MUSHROOM]: [4, 34], [T.PILLAR]: [5, 30],
 };
 const SANDY = new Set(['desert', 'oasis', 'amber', 'coast']);
 const SNOWY = new Set(['mountain', 'aurora']);

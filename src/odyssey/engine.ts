@@ -309,6 +309,7 @@ export class Game {
     if (!hasProp(t) && !TREE_TILES.has(t)) return true;
     if (this.depth) return t === this.depth.data.theme.wall;
     if (t !== T.PILLAR) return false;
+    if ((tx + ty) % 2) return true;
     if (tx >= ABYSS_ENTRY.x - 1 && tx <= ABYSS_ENTRY.x + ABYSS_ENTRY.w && ty >= ABYSS_ENTRY.y - 1 && ty <= ABYSS_ENTRY.y + ABYSS_ENTRY.h) return true;
     return TEMPLES.some((p) => Math.abs(p.tx - tx) <= 4 && Math.abs(p.ty - ty) <= 4);
   }

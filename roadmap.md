@@ -23,6 +23,6 @@
 - [ ] Testes e verificação jogando.
 # Trazido para este projeto (out/2026)
 - [x] Importar o jogo do GitHub e recriar contas no Lovable Cloud.
-- [ ] Objetos de todos os biomas mais bonitos e detalhados.
-- [ ] Masmorra mais linda, com segredos e história.
-- [ ] Tocha vendida na loja.
+- [x] Objetos de todos os biomas mais bonitos e detalhados.
+- [x] Masmorra mais linda, com segredos e história.
+- [x] Tocha vendida na loja.
