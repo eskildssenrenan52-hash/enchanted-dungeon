@@ -185,7 +185,7 @@ export function propAction(g: Game, run: boolean): string {
             if (isNew && n === CHRONICLE.length) g.toast('✨ A Crônica está completa. Você agora sabe o nome da Cantora: Lírien.', '#fff0a0');
           } else {
             g.discoveries.add(p.id);
-            text = TEMPLE_LINES[d.temple?.family ?? 'marble'] ?? TEMPLE_LINES.marble!;
+            text = TEMPLE_LINES[d.temple?.family ?? 'marble'] ?? TEMPLE_LINES['marble']!;
           }
           g.dialog = { npc: SCRIBE, text, choices: [{ label: 'Fechar', act: () => { g.dialog = null; } }] };
           g.save();
