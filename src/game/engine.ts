@@ -1001,7 +1001,6 @@ export class Game {
       if (t === T.WATER) v = (v + Math.floor(wt * 2)) % 4;
       if (t === T.LAVA) v = (v + Math.floor(wt * 3)) % 4;
       const b=biomeOf(this.world,tx*TS,ty*TS),frontier=b in FRONTIER?FRONTIER[b as FrontierBiome]:null;
-      const tree = [T.TREE,T.DTREE,T.AUTUMN_TREE,T.PALM].includes(t as 4);
       const ground=frontier&&t===frontier.obstacle&&this.art.frontier.naturalWidth?frontier.ground:TREE_TILES.has(t)&&this.art.canopy.naturalWidth?this.art.groundUnder(t,b):t;
       c.drawImage(this.tiles[ground][v], tx * TS, ty * TS);
     }
