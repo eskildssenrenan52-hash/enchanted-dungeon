@@ -98,6 +98,7 @@ function Index() {
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
+    if (import.meta.env.DEV) (window as unknown as { __game?: unknown }).__game = g;
     const iv = setInterval(() => setTick((x) => x + 1), 120);
     const down = (e: KeyboardEvent) => {
       if (!g.started) return;
