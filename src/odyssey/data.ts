@@ -195,7 +195,10 @@ ITEMS["carrot"] = { id: "carrot", name: "Cenoura", type: "material", desc: "Recu
 ITEMS["wheat"] = { id: "wheat", name: "Trigo", type: "material", desc: "Recurso do mundo de Mana.", color: "#e4c66e", price: 4 };
 ITEMS["moonflower"] = { id: "moonflower", name: "Flor da Lua", type: "material", desc: "Recurso do mundo de Mana.", color: "#c6b8ed", price: 4 };
 RECIPES.push({out:"iron_ingot",qty:1,station:"smith",cost:{iron_ore:2,coal:1},gold:0});
+ITEMS["torch"] = { id: "torch", name: "Tocha", type: "material", desc: "Ilumina templos escuros e o Abismo. Basta tê-la na bolsa.", color: "#ff9a40", price: 40 };
 SHOP.push("carrot_seed", "wheat_seed", "moon_seed", "coal");
+// A Tocha fica logo no começo da lista da loja.
+SHOP.splice(0, 0, "torch");
 
 // A Crônica do Cântico Partido: 17 Ecos, Vigias, chefes, missões e equipamento de fim de jogo (ver story.ts).
 for (const item of STORY_ITEMS) ITEMS[item.id] = item;

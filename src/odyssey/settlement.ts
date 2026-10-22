@@ -167,6 +167,7 @@ export function renderSettlement(g: Game, c: CanvasRenderingContext2D) {
 }
 export const CARPENTRY_RECIPES: Recipe[] = [
   { out: 'plank', qty: 4, station: 'carpenter', cost: { wood: 3 }, gold: 0 },
+  { out: 'torch', qty: 1, station: 'carpenter', cost: { wood: 2, coal: 1 }, gold: 0 },
   { out: 'carrot_seed', qty: 3, station: 'carpenter', cost: { carrot: 1 }, gold: 0 },
   { out: 'wheat_seed', qty: 3, station: 'carpenter', cost: { wheat: 1 }, gold: 0 },
 ];

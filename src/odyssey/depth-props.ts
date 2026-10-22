@@ -181,7 +181,7 @@ export function propAction(g: Game, run: boolean): string {
             g.discoveries.add(key); g.discoveries.add(p.id);
             const n = pagesFound(g);
             text = `${CHRONICLE[p.page]}\n\n— Página ${p.page + 1} da Crônica · ${n}/${CHRONICLE.length} encontradas`;
-            if (isNew && n % 10 === 0) { g.gold += n * 40; g.addItem('elixir', 1); g.toast(`📜 ${n} páginas da Crônica! +${n * 40} ouro e um Elixir.`, '#ffe080'); }
+            if (isNew && n % 10 === 0) { g.p.gold += n * 40; g.addItem('elixir', 1); g.toast(`📜 ${n} páginas da Crônica! +${n * 40} ouro e um Elixir.`, '#ffe080'); }
             if (isNew && n === CHRONICLE.length) g.toast('✨ A Crônica está completa. Você agora sabe o nome da Cantora: Lírien.', '#fff0a0');
           } else {
             g.discoveries.add(p.id);
