@@ -1,4 +1,4 @@
-import { WorldArt } from './world-art';
+import { WorldArt, TREE_TILES } from './world-art';
 import { FRONTIER, FRONTIER_GATES, LEGACY_W, LEGACY_H, type FrontierBiome } from './frontier';
 import { freshSettlement, growPlots, useWorldTool, interactSettlement, renderSettlement, applyStructures, CARPENTRY_RECIPES, type Tool, type CropKind, type StructureKind } from "./settlement";
 import {
@@ -1002,7 +1002,7 @@ export class Game {
       if (t === T.LAVA) v = (v + Math.floor(wt * 3)) % 4;
       const b=biomeOf(this.world,tx*TS,ty*TS),frontier=b in FRONTIER?FRONTIER[b as FrontierBiome]:null;
       const tree = [T.TREE,T.DTREE,T.AUTUMN_TREE,T.PALM].includes(t as 4);
-      const ground=frontier&&t===frontier.obstacle&&this.art.frontier.naturalWidth?frontier.ground:tree&&this.art.canopy.naturalWidth?T.GRASS:t;
+      const ground=frontier&&t===frontier.obstacle&&this.art.frontier.naturalWidth?frontier.ground:TREE_TILES.has(t)&&this.art.canopy.naturalWidth?this.art.groundUnder(t,b):t;
       c.drawImage(this.tiles[ground][v], tx * TS, ty * TS);
     }
     drawGroundDetails(c,this.world,x0,y0,x1,y1,wt);
@@ -1037,7 +1037,7 @@ export class Game {
     if (!this.interior) {
       for(let ty=y0-3;ty<=y1+3;ty++)for(let tx=x0-3;tx<=x1+3;tx++) {
         const t=tileAt(this.world,tx,ty);
-        if(!(biomeOf(this.world,tx*TS,ty*TS) in FRONTIER)&&[T.TREE,T.DTREE,T.AUTUMN_TREE,T.PALM].includes(t as 4))draws.push({y:ty*TS+16,f:()=>this.art.tree(c,t,tx,ty,wt)});
+        if(!(biomeOf(this.world,tx*TS,ty*TS) in FRONTIER)&&TREE_TILES.has(t))draws.push({y:ty*TS+16,f:()=>this.art.tree(c,t,tx,ty,wt)});
       }
       for(let ty=y0-3;ty<=y1+3;ty++)for(let tx=x0-3;tx<=x1+3;tx++){
         const b=biomeOf(this.world,tx*TS,ty*TS);
