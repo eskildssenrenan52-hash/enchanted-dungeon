@@ -1,4 +1,7 @@
-import { WorldArt } from './world-art';
+import { WorldArt, TREE_TILES, hasProp } from './world-art';
+import { TEMPLES } from './depths';
+import { ABYSS_ENTRY } from './dungeon';
+import { drawDepthProps } from './depth-props';
 import { FRONTIER, FRONTIER_GATES, LEGACY_W, LEGACY_H, type FrontierBiome } from './frontier';
 import { createHomeInterior, drawHome, drawFurniture, FURNITURE, freshHome, type FurnitureKind } from "./home";
 import { isPlayerHome, freshSettlement, growPlots, useWorldTool, interactSettlement, renderSettlement, applyStructures, CARPENTRY_RECIPES, type Tool, type CropKind, type StructureKind } from "./settlement";
@@ -299,6 +302,16 @@ export class Game {
     }
   }
   count(id: string) { return this.inventory.filter((s) => s.id === id).reduce((a, s) => a + s.qty, 0); }
+  /** Tiles que não recebem sprite de objeto: paredes das profundezas, interiores e as fachadas do Abismo e dos templos. */
+  spriteBlocked(tx: number, ty: number) {
+    if (this.interior) return true;
+    const t = tileAt(this.world, tx, ty);
+    if (!hasProp(t) && !TREE_TILES.has(t)) return true;
+    if (this.depth) return t === this.depth.data.theme.wall;
+    if (t !== T.PILLAR) return false;
+    if (tx >= ABYSS_ENTRY.x - 1 && tx <= ABYSS_ENTRY.x + ABYSS_ENTRY.w && ty >= ABYSS_ENTRY.y - 1 && ty <= ABYSS_ENTRY.y + ABYSS_ENTRY.h) return true;
+    return TEMPLES.some((p) => Math.abs(p.tx - tx) <= 4 && Math.abs(p.ty - ty) <= 4);
+  }
   addItem(id: string, qty = 1): boolean {
     const stack = ITEMS[id].type === "potion" || ITEMS[id].type === "material";
     if (stack) {

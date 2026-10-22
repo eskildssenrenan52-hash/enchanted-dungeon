@@ -20,6 +20,7 @@ const PROP: Partial<Record<number, [number, number]>> = {
 };
 const SANDY = new Set(['desert', 'oasis', 'amber', 'coast']);
 const SNOWY = new Set(['mountain', 'aurora']);
+export const hasProp = (t: number) => PROP[t] !== undefined;
 export const TREE_TILES = new Set<number>([T.TREE, T.DTREE, T.AUTUMN_TREE, T.PALM, T.PINE]);
 
 function load(src: string) { const i = new Image(); i.src = src; return i; }
