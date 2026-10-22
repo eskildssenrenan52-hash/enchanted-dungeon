@@ -1160,8 +1160,9 @@ export class Game {
       if (t === T.WATER) v = (v + Math.floor(wt * 2)) % 4;
       if (t === T.LAVA) v = (v + Math.floor(wt * 3)) % 4;
       const b=biomeOf(this.world,tx*TS,ty*TS),frontier=b in FRONTIER?FRONTIER[b as FrontierBiome]:null;
-      const tree = [T.TREE,T.DTREE,T.AUTUMN_TREE,T.PALM].includes(t as 4);
-      const ground=frontier&&t===frontier.obstacle&&this.art.frontier.naturalWidth?frontier.ground:tree&&this.art.canopy.naturalWidth?T.GRASS:t;
+      const ground=frontier&&t===frontier.obstacle&&this.art.frontier.naturalWidth?frontier.ground
+        :this.depth&&t===this.depth.data.theme.deco&&t!==T.WATER&&t!==T.LAVA?this.depth.data.theme.floor
+        :this.art.canopy.naturalWidth&&!this.spriteBlocked(tx,ty)?this.art.groundUnder(t,b):t;
       c.drawImage(this.tiles[ground][v], tx * TS, ty * TS);
     }
     drawGroundDetails(c,this.world,x0,y0,x1,y1,wt);
@@ -1201,9 +1202,12 @@ export class Game {
     const draws: { y: number; f: () => void }[] = [];
     if (!this.interior) {
       for(let ty=y0-3;ty<=y1+3;ty++)for(let tx=x0-3;tx<=x1+3;tx++) {
-        const t=tileAt(this.world,tx,ty);
-        if(!(biomeOf(this.world,tx*TS,ty*TS) in FRONTIER)&&[T.TREE,T.DTREE,T.AUTUMN_TREE,T.PALM].includes(t as 4))draws.push({y:ty*TS+16,f:()=>this.art.tree(c,t,tx,ty,wt)});
+        const t=tileAt(this.world,tx,ty),b=biomeOf(this.world,tx*TS,ty*TS);
+        if(b in FRONTIER&&t===FRONTIER[b as FrontierBiome].obstacle)continue;
+        if(TREE_TILES.has(t))draws.push({y:ty*TS+16,f:()=>this.art.tree(c,t,tx,ty,wt)});
+        else if(t!==T.WATER&&t!==T.LAVA&&!this.spriteBlocked(tx,ty))draws.push({y:ty*TS+16,f:()=>this.art.prop(c,t,b,tx,ty)});
       }
+      if(this.depth)drawDepthProps(this,c,draws,x0,y0,x1,y1,wt);
       for(let ty=y0-3;ty<=y1+3;ty++)for(let tx=x0-3;tx<=x1+3;tx++){
         const b=biomeOf(this.world,tx*TS,ty*TS);
         if(b in FRONTIER && tileAt(this.world,tx,ty)===FRONTIER[b as FrontierBiome].obstacle){
